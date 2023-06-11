@@ -1,5 +1,5 @@
-const { deleteUser } = require("../controllers/user-controller");
 const userModel = require("../model/user-model");
+
 registerUser = (payload) => {
     return new userModel({
         ...payload,
@@ -11,10 +11,15 @@ listUser = () => {
 getInfo = (_id) => {
     return userModel.findOne({ _id });
 }
-deleteUser = (user) => {
+deleteUserData = (user) => {
     return userModel.deleteOne({ _id: user });
 }
 updateUser = (user) => {
-    return userModel.deleteOne({ _id: user });
+    let _id = user._id;
+    delete user._id;
+    return userModel.findByIdAndUpdate({ _id }, {$set: {
+        ...user
+    }});
 }
-module.exports = { registerUser, getInfo, listUser, deleteUser,updateUser };
+
+module.exports = { registerUser, getInfo, listUser, deleteUserData,updateUser };

@@ -1,29 +1,41 @@
 // ['firstname','lastname','email','phonenumber','profession'];
-const userService  = require("../model/user-model")
+const userService  = require("../service/user-service")
 const createUser = async (req, res) => {
     try {
-        let userInfo = req.body; 
-        // console.log("userInfo",userInfo)
-        userInfo = validateUserObject(userInfo)
+        let userInfo = validateUserObject(req.body)
         let response = await userService.registerUser(userInfo);
         if(response){
             res.status(200).send({
                 status: 200,
                 message: 'User Data Sava Successfully',
+                result: response
             });
         }
-
     } catch (error) {
-        res.status(500).send({error});
-        console.error("Error Caught on createUser", error);
+        res.status(400).send({
+            status:400,
+            error:error.message
+        });
+        console.error("Error Caught on createUser", error.message);
     }
 };
-const getUserInfo = (req, res) => {
+const getUserInfo = async(req, res) => {
     try {
-        let userINfo = req.body;
-
+        let userId = (req.params.userId);
+        let response = await userService.getInfo(userId);
+        if(response){
+            res.status(200).send({
+                status: 200,
+                message: 'User Data Fetched Successfully',
+                results : response
+            });
+        }
     } catch (error) {
-        console.error("Error Caught on createUser", createUser)
+        res.status(400).send({
+            status:400,
+            error:error.message
+        });
+        console.error("Error Caught on getUserInfo", error.message);
     }
 };
 
@@ -36,18 +48,32 @@ const listUser = (req, res) => {
     }
 };
 
-const deleteUser = (req, res) => {
+const deleteUser = async (req, res) => {
     try {
-        let userINfo = req.body;
-
+        let userId = req.params.userId;
+        await userService.deleteUserData(userId);
+        res.status(200).send({
+            status:200,
+            result: "Successfully Deleted user!"
+        });
+        
     } catch (error) {
-        console.error("Error Caught on createUser", createUser)
+        console.error("Error Caught on deleteUser", createUser)
+        res.status(400).send({
+            status:400,
+            error:error.message
+        });
     }
 };
 
-const updateUser = (req, res) => {
+const updateUser = async(req, res) => {
     try {
-        let userINfo = req.body;
+        let userData = req.body;
+        await userService.updateUser(userData);
+        res.status(200).send({
+            status:200,
+            result: "Successfully updated user data!"
+        });
 
     } catch (error) {
         console.error("Error Caught on createUser", createUser)
