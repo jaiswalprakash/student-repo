@@ -3,6 +3,7 @@ const userService  = require("../model/user-model")
 const createUser = async (req, res) => {
     try {
         let userInfo = req.body; 
+        // console.log("userInfo",userInfo)
         userInfo = validateUserObject(userInfo)
         let response = await userService.registerUser(userInfo);
         if(response){
