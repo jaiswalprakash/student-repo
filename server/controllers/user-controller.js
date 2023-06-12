@@ -1,121 +1,124 @@
-// Import required modules and services
 const userService = require("../service/user-service");
 
-// Function to check if all required fields are present in user info
-const hasAllFields = (userInfo) => {
-	if (!userInfo.name || !userInfo.email || !userInfo.phone || !userInfo.address) {
-		return false;
-	} else {
-		return true;
-	}
-};
-
-// One line Function to check if all required fields are present in user info
-// const hasAllFields = (userInfo) => userInfo.name && userInfo.email && userInfo.phone && userInfo.address;
-
-// Controller function to create a new user
+// Function to create a user
 const createUser = async (req, res) => {
-	try {
-		let userInfo = req.body;
-
-		// Check if the user info has all the required fields
-		if (hasAllFields(userInfo)) {
-			// Call the registerUser function from the userService to create the user
-			let response = await userService.registerUser(userInfo);
-
-			// Send success response
-			res.status(200).send({
-				message: "Successfully added a new user!",
-				result: response
-			});
-		} else {
-			// Throw an error if any required field is missing
-			throw new Error("All fields are required.");
-		}
-	} catch (error) {
-		console.log("Error occurred while creating user: ", error.message);
-		res.status(400).json({ message: "Error", error: error.message });
-	}
+    try {
+        let userInfo = validateUserObject(req.body); // Validate the user object
+        let response = await userService.registerUser(userInfo); // Call the registerUser function from the user-service
+        if (response) {
+            // If the response exists, send a success response
+            res.status(200).send({
+                status: 200,
+                message: 'User Data Sava Successfully',
+                result: response
+            });
+        }
+    } catch (error) {
+        // If an error occurs, send an error response
+        res.status(400).send({
+            status: 400,
+            error: error.message
+        });
+        console.error("Error Caught on createUser", error.message);
+    }
 };
 
-// Controller function to get user information
+// Function to get user information
 const getUserInfo = async (req, res) => {
-	try {
-		let { userId } = req.params;
-
-		// Call the getInfo function from the userService to fetch the user information
-		let response = await userService.getInfo(userId);
-
-		if (response) {
-			// Send success response with the fetched user information
-			res.status(200).send({
-				message: "User Data Fetched Successfully",
-				results: response
-			});
-		}
-	} catch (error) {
-		console.log("Error occurred while getting user info: ", error.message);
-		res.status(400).json({ message: "Error", error: error.message });
-	}
+    try {
+        let userId = req.params.userId; // Get the userId from the request parameters
+        let response = await userService.getInfo(userId); // Call the getInfo function from the user-service
+        if (response) {
+            // If the response exists, send a success response
+            res.status(200).send({
+                status: 200,
+                message: 'User Data Fetched Successfully',
+                results: response
+            });
+        }
+    } catch (error) {
+        // If an error occurs, send an error response
+        res.status(400).send({
+            status: 400,
+            error: error.message
+        });
+        console.error("Error Caught on getUserInfo", error.message);
+    }
 };
 
-// Controller function to list all users
-const listAllUsers = async (req, res) => {
-	try {
-		// Call the listAllUsers function from the userService to get all users
-		let allUsers = await userService.getAllUsers();
-
-		// Send success response with the list of all users
-		res.status(200).send(allUsers);
-	} catch (error) {
-		console.log("Error occurred while listing all users: ", error);
-		res.status(400).json({ message: "Error", error: error.message });
-	}
+// Function to list users
+const listUser = (req, res) => {
+    try {
+        let userINfo = req.body; // Get the user information from the request body
+        // Perform further operations as needed
+    } catch (error) {
+        console.error("Error Caught on listUser", error.message);
+    }
 };
 
-// Controller function to update user information
-const updateUser = async (req, res) => {
-	try {
-		let { userId } = req.params;
-		let userData = req.body;
-
-		// Call the updateUser function from the userService to update the user information
-		let response = await userService.updateUser(userId, userData);
-
-		// Send success response with the updated user information
-		res.status(200).send({
-			message: "Successfully updated user data!",
-			result: response
-		});
-	} catch (error) {
-		console.log("Error occurred while updating user details: ", error);
-		res.status(400).json({ message: "Error", error: error.message });
-	}
-};
-
-// Controller function to delete a user
+// Function to delete a user
 const deleteUser = async (req, res) => {
-	try {
-		let { userId } = req.params;
-
-		// Call the deleteUserData function from the userService to delete the user
-		let response = await userService.deleteUserData(userId);
-		if (response) {
-			// Send success response if the user was deleted successfully
-			res.status(200).send({
-				message: "Successfully deleted the user!",
-				result: response
-			});
-		} else {
-			// Send error response if no user was found with the given userId
-			res.status(404).send({
-				message: "No user found by the given userId!"
-			});
-		}
-	} catch (error) {
-		console.log("Error occurred while deleting user: ", error);
-		res.status(400).json({ message: "Error", error: error.message });
-	}
+    try {
+        let userId = req.params.userId; // Get the userId from the request parameters
+        await userService.deleteUserData(userId); // Call the deleteUserData function from the user-service
+        res.status(200).send({
+            status: 200,
+            result: "Successfully Deleted user!"
+        });
+    } catch (error) {
+        console.error("Error Caught on deleteUser", error.message);
+        res.status(400).send({
+            status: 400,
+            error: error.message
+        });
+    }
 };
 
-module.exports = { createUser, getUserInfo, listAllUsers, deleteUser, updateUser }; // Export the controller functions
+// Function to update user data
+const updateUser = async (req, res) => {
+    try {
+        let userData = req.body; // Get the user data from the request body
+        await userService.updateUser(userData); // Call the updateUser function from the user-service
+        res.status(200).send({
+            status: 200,
+            result: "Successfully updated user data!"
+        });
+    } catch (error) {
+        console.error("Error Caught on updateUser", error.message);
+    }
+};
+
+function validateUserObject(user) {
+    // Check if all required fields are present
+    if (!user.name || !user.email || !user.phone || !user.address) {
+      throw new Error('All fields are required.');
+    }
+  
+    // Check if the name is a non-empty string
+    if (typeof user.name !== 'string' || user.name.trim() === '') {
+      throw new Error('Invalid name. Name must be a non-empty string.');
+    }
+  
+    // Check if the address is a non-empty string
+    if (typeof user.address !== 'string' || user.address.trim() === '') {
+      throw new Error('Invalid address. Address must be a non-empty string.');
+    }
+  
+    // Check if the email is valid
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(user.email)) {
+      throw new Error('Invalid email format.');
+    }
+  
+    // Check if the phone number is valid
+    const phoneRegex = /^\d{10}$/; // Assumes a 10-digit phone number format
+    if (!phoneRegex.test(user.phone)) {
+      throw new Error('Invalid phone number format.');
+    }
+  
+    // If all checks pass, the object is considered valid
+    return user;
+}
+
+module.exports = { createUser, getUserInfo, listUser, deleteUser,updateUser };
+
