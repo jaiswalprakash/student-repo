@@ -52,11 +52,7 @@ const listUser = async (req, res) => {
 		// Call the listAllUsers function from the userService to get all users
 		let allUsers = await userService.getAllUsers();
 		// Send success response with the list of all users
-		res.status(200).send({
-			status: 200,
-			message: 'User Data Fetched Successfully',
-            results: allUsers
-		});
+		res.status(200).send(allUsers);
 	} catch (error) {
 		console.log("Error occurred while listing all users: ", error);
 		res.status(400).json({ message: "Error", error: error.message });
