@@ -28,10 +28,10 @@ const deleteUserData = (user) => {
 
 // Function to update user data
 const updateUser = (userData) => {
-	let _id = user._id; // Get the _id from the user object
-    delete user._id; // Remove the _id property from the user object
+	let _id = userData._id; // Get the _id from the user object
+    delete userData._id; // Remove the _id property from the user object
     return userModel.findByIdAndUpdate({ _id }, {$set: {
-        ...user
+        ...userData
     }}); // Update the user with the specified _id using the new user data
 };
 
