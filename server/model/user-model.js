@@ -54,8 +54,8 @@ const UserSchema = new schema(
 			trim: true,
 			required: true,
 			validate(value) {
-				if (!validator.isAlphanumeric(value) && !validator.isLength(value, { min: 5, max: 100 })) {
-					throw new Error("Invalid address. Address must be a non-empty string.");
+				if (!validator.isLength(value, { min: 5, max: 100 })) {
+					throw new Error("Invalid address. Address must be a non-empty string and contain more than 5 characters.");
 				}
 				// if (value.length < 5) {
 				// 	throw new Error("Invalid address. Address must be a non-empty string.");

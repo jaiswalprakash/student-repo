@@ -38,7 +38,7 @@ const createUser = async (req, res) => {
 
 			// Send success response
 			res.status(200).send({
-				message: "User created successfully!",
+				message: "Successfully added a new user!",
 				result: response
 			});
 		} else {
@@ -81,7 +81,7 @@ const getUserInfo = async (req, res) => {
 const listAllUsers = async (req, res) => {
 	try {
 		// Call the listAllUsers function from the userService to get all users
-		let allUsers = await userService.listAllUsers();
+		let allUsers = await userService.getAllUsers();
 
 		// Send success response with the list of all users
 		res.status(200).send(allUsers);
