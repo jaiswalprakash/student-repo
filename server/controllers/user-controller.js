@@ -88,6 +88,10 @@ const updateUser = async (req, res) => {
         });
     } catch (error) {
         console.error("Error Caught on updateUser", error.message);
+		res.status(400).send({
+            status: 400,
+            error: error.message
+        });
     }
 };
 
