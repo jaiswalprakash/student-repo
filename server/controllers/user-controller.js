@@ -80,8 +80,9 @@ const deleteUser = async (req, res) => {
 // Function to update user data
 const updateUser = async (req, res) => {
     try {
+        let userId = req.params.userId;
         let userData = req.body; // Get the user data from the request body
-        let response = await userService.updateUser(userData); // Call the updateUser function from the user-service
+        let response = await userService.updateUser(userId, userData); // Call the updateUser function from the user-service
         res.status(200).send({
             status: 200,
             message: "Successfully updated user data!",
