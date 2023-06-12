@@ -1,10 +1,12 @@
-// ['firstname','lastname','email','phonenumber','profession'];
-const userService  = require("../service/user-service")
+const userService = require("../service/user-service");
+
+// Function to create a user
 const createUser = async (req, res) => {
     try {
-        let userInfo = validateUserObject(req.body)
-        let response = await userService.registerUser(userInfo);
-        if(response){
+        let userInfo = validateUserObject(req.body); // Validate the user object
+        let response = await userService.registerUser(userInfo); // Call the registerUser function from the user-service
+        if (response) {
+            // If the response exists, send a success response
             res.status(200).send({
                 status: 200,
                 message: 'User Data Sava Successfully',
@@ -12,71 +14,77 @@ const createUser = async (req, res) => {
             });
         }
     } catch (error) {
+        // If an error occurs, send an error response
         res.status(400).send({
-            status:400,
-            error:error.message
+            status: 400,
+            error: error.message
         });
         console.error("Error Caught on createUser", error.message);
     }
 };
-const getUserInfo = async(req, res) => {
+
+// Function to get user information
+const getUserInfo = async (req, res) => {
     try {
-        let userId = (req.params.userId);
-        let response = await userService.getInfo(userId);
-        if(response){
+        let userId = req.params.userId; // Get the userId from the request parameters
+        let response = await userService.getInfo(userId); // Call the getInfo function from the user-service
+        if (response) {
+            // If the response exists, send a success response
             res.status(200).send({
                 status: 200,
                 message: 'User Data Fetched Successfully',
-                results : response
+                results: response
             });
         }
     } catch (error) {
+        // If an error occurs, send an error response
         res.status(400).send({
-            status:400,
-            error:error.message
+            status: 400,
+            error: error.message
         });
         console.error("Error Caught on getUserInfo", error.message);
     }
 };
 
+// Function to list users
 const listUser = (req, res) => {
     try {
-        let userINfo = req.body;
-
+        let userINfo = req.body; // Get the user information from the request body
+        // Perform further operations as needed
     } catch (error) {
-        console.error("Error Caught on createUser", createUser)
+        console.error("Error Caught on listUser", error.message);
     }
 };
 
+// Function to delete a user
 const deleteUser = async (req, res) => {
     try {
-        let userId = req.params.userId;
-        await userService.deleteUserData(userId);
+        let userId = req.params.userId; // Get the userId from the request parameters
+        await userService.deleteUserData(userId); // Call the deleteUserData function from the user-service
         res.status(200).send({
-            status:200,
+            status: 200,
             result: "Successfully Deleted user!"
         });
-        
     } catch (error) {
-        console.error("Error Caught on deleteUser", createUser)
+        console.error("Error Caught on deleteUser", error.message);
         res.status(400).send({
-            status:400,
-            error:error.message
+            status: 400,
+            error: error.message
         });
     }
 };
 
-const updateUser = async(req, res) => {
+// Function to update user data
+const updateUser = async (req, res) => {
     try {
-        let userData = req.body;
-        await userService.updateUser(userData);
+        let userData = req.body; // Get the user data from the request body
+        await userService.updateUser(userData); // Call the updateUser function from the user-service
         res.status(200).send({
-            status:200,
+            status: 200,
             result: "Successfully updated user data!"
         });
-
     } catch (error) {
-        console.error("Error Caught on createUser", createUser)
+        console.error("Error Caught on updateUser", error.message);
     }
 };
 
