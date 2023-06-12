@@ -1,27 +1,14 @@
 // Import required modules and services
 const userService = require("../service/user-service");
-const validator = require("validator");
-
-// Define an array of required fields
-const requiredFields = ["name", "email", "phone", "address"];
 
 // Function to check if all required fields are present in user info
 const hasAllFields = (userInfo) => {
-	return requiredFields.every((property) => {
-		return userInfo.hasOwnProperty(property);
-	});
+	if (!userInfo.name || !userInfo.email || !userInfo.phone || !userInfo.address) {
+		return false;
+	} else {
+		return true;
+	}
 };
-// One line Function to check if all required fields are present in user info
-// const hasAllFields = (userInfo) => requiredFields.every((property) => userInfo.hasOwnProperty(property));
-
-// Function to check if all required fields are present in user info
-// const hasAllFields = (userInfo) => {
-// 	if (!userInfo.name || !userInfo.email || !userInfo.phone || !userInfo.address) {
-// 		return false;
-// 	} else {
-// 		return true;
-// 	}
-// };
 
 // One line Function to check if all required fields are present in user info
 // const hasAllFields = (userInfo) => userInfo.name && userInfo.email && userInfo.phone && userInfo.address;
@@ -55,11 +42,6 @@ const createUser = async (req, res) => {
 const getUserInfo = async (req, res) => {
 	try {
 		let { userId } = req.params;
-
-		// Check if the provided userId is a valid MongoDB id
-		if (!validator.isMongoId(userId)) {
-			throw new Error("Invalid user id!");
-		}
 
 		// Call the getInfo function from the userService to fetch the user information
 		let response = await userService.getInfo(userId);
@@ -96,11 +78,6 @@ const updateUser = async (req, res) => {
 	try {
 		let { userId } = req.params;
 		let userData = req.body;
-
-		// Check if the provided userId is a valid MongoDB id
-		if (!validator.isMongoId(userId)) {
-			throw new Error("Invalid user id!");
-		}
 
 		// Call the updateUser function from the userService to update the user information
 		let response = await userService.updateUser(userId, userData);
