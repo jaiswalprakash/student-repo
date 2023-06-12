@@ -47,13 +47,16 @@ const getUserInfo = async (req, res) => {
 };
 
 // Function to list users
-const listUser = (req, res) => {
-    try {
-        let userINfo = req.body; // Get the user information from the request body
-        // Perform further operations as needed
-    } catch (error) {
-        console.error("Error Caught on listUser", error.message);
-    }
+const listUser = async (req, res) => {
+	try {
+		// Call the listAllUsers function from the userService to get all users
+		let allUsers = await userService.getAllUsers();
+		// Send success response with the list of all users
+		res.status(200).send(allUsers);
+	} catch (error) {
+		console.log("Error occurred while listing all users: ", error);
+		res.status(400).json({ message: "Error", error: error.message });
+	}
 };
 
 // Function to delete a user
