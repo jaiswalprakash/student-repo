@@ -27,20 +27,12 @@ const deleteUserData = (user) => {
 };
 
 // Function to update user data
-const updateUser = (_id, userData) => {
-	// Find a user document with the specified _id and update its data with the provided userData
-	// The $set operator is used to update specific fields in the document
-	// The runValidators option ensures that the update operation follows the validation rules defined in the userModel schema
-	// The new option returns the updated document after the update operation is performed
-	return userModel.findByIdAndUpdate(
-		{ _id },
-		{
-			$set: {
-				...userData
-			}
-		},
-		{ runValidators: true, new: true }
-	);
+const updateUser = (userData) => {
+	let _id = user._id; // Get the _id from the user object
+    delete user._id; // Remove the _id property from the user object
+    return userModel.findByIdAndUpdate({ _id }, {$set: {
+        ...user
+    }}); // Update the user with the specified _id using the new user data
 };
 
 module.exports = { registerUser, getInfo, getAllUsers, deleteUserData, updateUser }; // Export the service functions
