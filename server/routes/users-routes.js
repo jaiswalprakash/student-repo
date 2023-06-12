@@ -11,7 +11,7 @@ router.post("/create", userController.createUser);
 router.get("/get-info/:userId", userController.getUserInfo);
 
 // Route to list all users
-router.get("/get-all", userController.listAllUsers);
+router.get("/get-all", userController.listUser);
 
 // Route to delete a user by user ID
 router.delete("/delete/:userId", userController.deleteUser);
