@@ -6,9 +6,19 @@ const requiredFields = ["name", "email", "phone", "address"];
 
 const hasAllFields = (userInfo) => {
 	return requiredFields.every((property) => {
-		return Object.prototype.hasOwnProperty.call(userInfo, property);
+		return userInfo.hasOwnProperty(property);
 	});
 };
+// const hasAllFields = (userInfo) => requiredFields.every((property) => userInfo.hasOwnProperty(property));
+
+// const hasAllFields = (userInfo) => {
+// 	if (!userInfo.name || !userInfo.email || !userInfo.phone || !userInfo.address) {
+// 		return false;
+// 	} else {
+// 		return true;
+// 	}
+// };
+// const hasAllFields = (userInfo) => userInfo.name && userInfo.email && userInfo.phone && userInfo.address;
 
 const createUser = async (req, res) => {
 	try {
@@ -95,37 +105,5 @@ const deleteUser = async (req, res) => {
 		res.status(400).json({ message: "Error", error: error.message });
 	}
 };
-
-// function validateUserObject(user) {
-// 	// Check if all required fields are present
-// 	if (!user.name || !user.email || !user.phone || !user.address) {
-// 		throw new Error("All fields are required.");
-// 	}
-
-// 	// Check if the name is a non-empty string
-// 	if (typeof user.name !== "string" || user.name.trim() === "") {
-// 		throw new Error("Invalid name. Name must be a non-empty string.");
-// 	}
-
-// 	// Check if the address is a non-empty string
-// 	if (typeof user.address !== "string" || user.address.trim() === "") {
-// 		throw new Error("Invalid address. Address must be a non-empty string.");
-// 	}
-
-// 	// Check if the email is valid
-// 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// 	if (!emailRegex.test(user.email)) {
-// 		throw new Error("Invalid email format.");
-// 	}
-
-// 	// Check if the phone number is valid
-// 	const phoneRegex = /^\d{10}$/; // Assumes a 10-digit phone number format
-// 	if (!phoneRegex.test(user.phone)) {
-// 		throw new Error("Invalid phone number format.");
-// 	}
-
-// 	// If all checks pass, the object is considered valid
-// 	return user;
-// }
 
 module.exports = { createUser, getUserInfo, listAllUsers, deleteUser, updateUser };

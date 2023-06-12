@@ -9,9 +9,13 @@ const UserSchema = new schema(
 			trim: true,
 			required: true,
 			validate(value) {
-				if (!validator.isAlpha(value) && !validator.isLength(value, { min: 1 })) {
+				if (!validator.isAlpha(value) && !validator.isLength(value, { min: 3 })) {
 					throw new Error("Invalid name. Name must be a non-empty string.");
 				}
+				// const alphabetOnlyRegex = /^[A-Za-z]+$/;
+				// if (!alphabetOnlyRegex.test(value) && value.length < 3) {
+				// 	throw new Error("Invalid address. Address must be a non-empty string.");
+				// }
 			}
 		},
 		email: {
@@ -24,6 +28,10 @@ const UserSchema = new schema(
 				if (!validator.isEmail(value)) {
 					throw new Error("Invalid email!");
 				}
+				// const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				// if (!emailRegex.test(value)) {
+				// 	throw new Error("Invalid email format.");
+				// }
 			}
 		},
 		phone: {
@@ -35,6 +43,10 @@ const UserSchema = new schema(
 				if (!validator.isMobilePhone(value.toString(), "en-IN")) {
 					throw new Error("Not an Indian phone number!");
 				}
+				// const phoneRegex = /^\d{10}$/; // Assumes a 10-digit phone number format
+				// if (!phoneRegex.test(value)) {
+				// 	throw new Error("Invalid phone number format.");
+				// }
 			}
 		},
 		address: {
@@ -45,6 +57,9 @@ const UserSchema = new schema(
 				if (!validator.isAlphanumeric(value) && !validator.isLength(value, { min: 5, max: 100 })) {
 					throw new Error("Invalid address. Address must be a non-empty string.");
 				}
+				// if (value.length < 5) {
+				// 	throw new Error("Invalid address. Address must be a non-empty string.");
+				// }
 			}
 		}
 	},
