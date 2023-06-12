@@ -52,7 +52,11 @@ const listUser = async (req, res) => {
 		// Call the listAllUsers function from the userService to get all users
 		let allUsers = await userService.getAllUsers();
 		// Send success response with the list of all users
-		res.status(200).send(allUsers);
+		res.status(200).send({
+			status: 200,
+			message: 'User Data Fetched Successfully',
+            results: allUsers
+		});
 	} catch (error) {
 		console.log("Error occurred while listing all users: ", error);
 		res.status(400).json({ message: "Error", error: error.message });
@@ -66,7 +70,7 @@ const deleteUser = async (req, res) => {
         await userService.deleteUserData(userId); // Call the deleteUserData function from the user-service
         res.status(200).send({
             status: 200,
-            result: "Successfully Deleted user!"
+            message: "Successfully Deleted user!"
         });
     } catch (error) {
         console.error("Error Caught on deleteUser", error.message);
@@ -81,10 +85,11 @@ const deleteUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         let userData = req.body; // Get the user data from the request body
-        await userService.updateUser(userData); // Call the updateUser function from the user-service
+        let response = await userService.updateUser(userData); // Call the updateUser function from the user-service
         res.status(200).send({
             status: 200,
-            result: "Successfully updated user data!"
+            message: "Successfully updated user data!",
+			results : response
         });
     } catch (error) {
         console.error("Error Caught on updateUser", error.message);
