@@ -30,7 +30,7 @@ const deleteUserData = (user) => {
 const updateUser = (_id, userData) => {
     return userModel.findByIdAndUpdate({ _id }, {$set: {
         ...userData
-    }}); // Update the user with the specified _id using the new user data
+    }}, {new: true}); // Update the user with the specified _id using the new user data
 };
 
 module.exports = { registerUser, getInfo, getAllUsers, deleteUserData, updateUser }; // Export the service functions
