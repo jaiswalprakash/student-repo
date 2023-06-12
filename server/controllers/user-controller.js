@@ -86,7 +86,7 @@ const updateUser = async (req, res) => {
         res.status(200).send({
             status: 200,
             message: "Successfully updated user data!",
-			results : response
+			result : response
         });
     } catch (error) {
         console.error("Error Caught on updateUser", error.message);
